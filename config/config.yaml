@@ -1,0 +1,39 @@
+# Matching parameters
+matching:
+  auto_threshold: 95
+  doubtful_threshold: 85
+
+# Column headers mapping in excel files
+columns:
+  piano:
+    ente: "Ente proponente"
+    area: "Area"
+    ambito: "Ambito"
+    titolo: "Titolo"
+    fonte: "Fonte di Finanziamento"
+  report:
+    titolo: "Corsi 2026"
+    corso: "Corso"
+    edizione: "Edizione"
+    crediti: "CREDITI"
+    docente: "Docente"
+    ore_docente: "Ore Formazione"
+    tipo_orario: "Tipo Orario"
+    costo_servizio: "Costo Orario Servizio"
+    costo_fuori_servizio: "Costo Orario Fuori Servizio"
+    ore_svolte_edizione: "Ore Svolte Edizione"
+  lea:
+    titolo: "Titolo Corso"
+    corso: "Codice Corso"
+    iscritti: "Totale iscritti"
+    effettivi: "Partecipanti Effettivi"
+    crediti_ecm: "Con Crediti ECM"
+    partecipante_id: "Codice Fiscale"
+
+# Extra course costs configurations (such as ACLS)
+additional_costs:
+  - pattern: "ACLS"
+    per_participant:
+      costo_manuale: 55.00
+      costo_segreteria: 20.00
+    fixed: {}
