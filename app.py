@@ -454,10 +454,17 @@ else:
         # Download Excel
         st.markdown("### 📥 Scarica Report")
         
-        # Write styled output in bytes buffer
-        buffer = io.BytesIO()
-        ReportExporter.export(final_courses, buffer)
-        excel_data = buffer.getvalue()
+        # Write styled output to a temporary file on disk to prevent Excel file corruption
+        import tempfile
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".xlsx") as tmp:
+            tmp_path = tmp.name
+        try:
+            ReportExporter.export(final_courses, tmp_path)
+            with open(tmp_path, "rb") as f:
+                excel_data = f.read()
+        finally:
+            if os.path.exists(tmp_path):
+                os.remove(tmp_path)
         
         filename = f"report_formazione_{datetime.now().strftime('%Y-%m-%d')}.xlsx"
         
