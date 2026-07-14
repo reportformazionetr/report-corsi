@@ -1,0 +1,22 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Excel test files and data folders (keep data offline for privacy)
+example_excel/
+sample_data/
+*.xlsx
+*.xls
+*.csv
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE configurations
+.vscode/
+.idea/
+.project
+.pydevproject
