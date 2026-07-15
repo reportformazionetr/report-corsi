@@ -19,6 +19,12 @@ class Course:
     dettaglio_calcolo: str = ""
     note: str = ""
 
+    @property
+    def crediti_x_partecipanti(self) -> float:
+        cf = self.crediti_formativi or 0.0
+        np = self.numero_partecipanti or 0
+        return round(cf * np, 2)
+
 @dataclass
 class Edition:
     codice_corso: str

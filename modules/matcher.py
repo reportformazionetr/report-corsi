@@ -53,6 +53,11 @@ def normalize_title(title: str) -> str:
     
     return t
 
+CONFLICTING_ACRONYMS = {
+    "acls", "blsd", "rls", "rup", "sdo", "whp", "ecg", "ecmo", "picc", "port", "tin", "niv", "mbsr", "pdta", "gom", "dea",
+    "bls", "pblsd", "als", "pals"
+}
+
 class FuzzyMatcher:
     """Coordinates fuzzy matching of course titles between the Plan (Piano) and other sources (Report/LEA)."""
     
@@ -65,10 +70,25 @@ class FuzzyMatcher:
         if not candidates:
             return None, 0.0
             
+        # 1. Check for manual equivalences in configuration first
+        eq_map = settings.get("equivalences", {})
+        if piano_title in eq_map:
+            targets = eq_map[piano_title]
+            if isinstance(targets, str):
+                targets = [targets]
+            # Normalise comparison to prevent minor spacing/casing issues in config
+            targets_clean = {t.strip().lower(): t for t in targets}
+            for cand in candidates:
+                if cand.strip().lower() in targets_clean:
+                    return cand, 100.0
+            
         norm_piano = normalize_title(piano_title)
         if not norm_piano:
             return None, 0.0
             
+        words_piano = set(norm_piano.split())
+        acronyms_piano = words_piano.intersection(CONFLICTING_ACRONYMS)
+        
         best_title = None
         best_score = 0.0
         
@@ -77,6 +97,14 @@ class FuzzyMatcher:
             if not norm_cand:
                 continue
                 
+            words_cand = set(norm_cand.split())
+            acronyms_cand = words_cand.intersection(CONFLICTING_ACRONYMS)
+            
+            # If both contain acronyms from the conflicting list, they must share at least one
+            if acronyms_piano and acronyms_cand:
+                if acronyms_piano.isdisjoint(acronyms_cand):
+                    continue
+                    
             # Use ratio as Levenshtein distance metric
             score = fuzz.ratio(norm_piano, norm_cand)
             if score > best_score:

@@ -37,3 +37,8 @@ additional_costs:
       costo_manuale: 55.00
       costo_segreteria: 20.00
     fixed: {}
+
+# Manual title equivalences for extreme matching outliers (Piano Title -> List of equivalent titles in Report/LEA)
+equivalences:
+  "Formazione generale ai sensi del D.lgs. 81/08":
+    - "CORSO SICUREZZA LAVORATORI “LA FORMAZIONE GENERALE DEI LAVORATORI” (ai sensi del D.lgs. 81/2008 s.m.i. e accordi attuativi)"

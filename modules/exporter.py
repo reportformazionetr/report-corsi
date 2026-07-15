@@ -25,6 +25,7 @@ class ReportExporter:
                 "Edizioni da completare": c.edizioni_da_completare,
                 "Fonte di finanziamento": c.fonte_finanziamento,
                 "Crediti formativi": c.crediti_formativi if c.crediti_formativi > 0 else None,
+                "Crediti formativi x Partecipanti ECM": c.crediti_x_partecipanti if (c.crediti_formativi > 0 and c.numero_partecipanti > 0) else None,
                 "Ore svolte": c.ore_svolte,
                 "Partecipanti effettivi": c.partecipanti_effettivi,
                 "Numero partecipanti ECM": c.numero_partecipanti,
@@ -84,7 +85,7 @@ class ReportExporter:
                     # Let's use currency-independent standard format with 2 decimals
                     cell.number_format = "#,##0.00"
                 # Crediti formativi, Ore svolte (Col 9, 10)
-                elif col_name in ["Crediti formativi", "Ore svolte"]:
+                elif col_name in ["Crediti formativi", "Ore svolte", "Crediti formativi x Partecipanti ECM"]:
                     cell.alignment = align_right
                     cell.number_format = "#,##0.0"
                 # N., Edizioni concluse, Numero partecipanti ECM, Partecipanti effettivi

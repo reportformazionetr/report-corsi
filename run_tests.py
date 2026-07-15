@@ -117,5 +117,44 @@ class TestReportSystem(unittest.TestCase):
         self.assertIn(norm_title, data["by_title"])
         self.assertAlmostEqual(data["by_title"][norm_title], 2852.34831, places=4)
 
+    def test_acronym_conflicts(self):
+        """Test that conflicting acronyms are NOT matched despite high shared word count."""
+        matcher = FuzzyMatcher()
+        
+        # 1. Esecutore BLSD vs Esecutore ACLS should not match (should yield None, 0.0)
+        best_title, score = matcher.find_best_match(
+            "Esecutore BLSD (Basic Life Support Defibrillation)",
+            ["Esecutore ACLS (Advanced Cardiac Life Support) (AHA)"]
+        )
+        self.assertIsNone(best_title)
+        self.assertEqual(score, 0.0)
+        
+        # 2. Aggiornamento RLS vs Formazione per i RUP should not match
+        best_title, score = matcher.find_best_match(
+            "Aggiornamento RLS ai sensi del D.lgs. 81/08",
+            ["Formazione per i RUP"]
+        )
+        self.assertIsNone(best_title)
+        self.assertEqual(score, 0.0)
+        
+        # 3. Compatible acronyms (or same acronym) should match
+        best_title, score = matcher.find_best_match(
+            "Esecutore BLSD (Basic Life Support Defibrillation)",
+            ["BLSD UNIVERSITA' NO ECM", "Esecutore ACLS"]
+        )
+        self.assertEqual(best_title, "BLSD UNIVERSITA' NO ECM")
+        self.assertGreater(score, 0.0)
+
+    def test_manual_equivalences(self):
+        """Test that configured manual equivalences map perfectly with score 100.0."""
+        matcher = FuzzyMatcher()
+        
+        # Test mapped equivalence (should return the exact equivalent title with 100.0 score)
+        piano_title = "Formazione generale ai sensi del D.lgs. 81/08"
+        target_lea = "CORSO SICUREZZA LAVORATORI “LA FORMAZIONE GENERALE DEI LAVORATORI” (ai sensi del D.lgs. 81/2008 s.m.i. e accordi attuativi)"
+        best_title, score = matcher.find_best_match(piano_title, [target_lea, "Unrelated Course"])
+        self.assertEqual(best_title, target_lea)
+        self.assertEqual(score, 100.0)
+
 if __name__ == "__main__":
     unittest.main()

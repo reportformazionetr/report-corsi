@@ -443,6 +443,7 @@ else:
                 "N.": st.column_config.NumberColumn("N.", format="%d"),
                 "Spesa sostenuta": st.column_config.NumberColumn("Spesa sostenuta (€)", format="%.2f"),
                 "Crediti formativi": st.column_config.NumberColumn("Crediti formativi", format="%.1f"),
+                "Crediti formativi x Partecipanti ECM": st.column_config.NumberColumn("Crediti formativi x Partecipanti ECM", format="%.1f"),
                 "Ore svolte": st.column_config.NumberColumn("Ore svolte", format="%.1f"),
                 "Partecipanti effettivi": st.column_config.NumberColumn("Partecipanti effettivi", format="%d"),
                 "Edizioni concluse": st.column_config.NumberColumn("Edizioni concluse", format="%d"),
