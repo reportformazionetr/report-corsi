@@ -155,6 +155,34 @@ class TestReportSystem(unittest.TestCase):
         best_title, score = matcher.find_best_match(piano_title, [target_lea, "Unrelated Course"])
         self.assertEqual(best_title, target_lea)
         self.assertEqual(score, 100.0)
+        
+        # Test mapped equivalence for BLSD (handles spacing gracefully)
+        piano_blsd = "Esecutore BLSD (Basic Life Support Defibrillation)"
+        target_blsd = "BLSD  (Basic Life Support Defibrillation)"
+        best_title, score = matcher.find_best_match(piano_blsd, [target_blsd, "Unrelated Course"])
+        self.assertEqual(best_title, target_blsd)
+        self.assertEqual(score, 100.0)
+        
+        # Test mapped equivalence for Fire Safety course
+        piano_fire = "Corso per addetto Antincendio livello III 2026"
+        target_report = "Antincendio Livello III + ESAME"
+        best_title, score = matcher.find_best_match(piano_fire, [target_report, "Unrelated Course"])
+        self.assertEqual(best_title, target_report)
+        self.assertEqual(score, 100.0)
+        
+        # Test mapped equivalence for Movimentazione Manuale
+        piano_mov = "Formazione e addestramento Movimentazione Manuale Pazienti"
+        target_mov = "Gestione del rischio da movimentazione manuale dei carichi e dei pazienti"
+        best_title, score = matcher.find_best_match(piano_mov, [target_mov, "Unrelated Course"])
+        self.assertEqual(best_title, target_mov)
+        self.assertEqual(score, 100.0)
+        
+        # Test mapped equivalence for Governance Chirurgica
+        piano_gov = "NUOVA GOVERNANCE CHIRURGICA: Focus prericovero e percorso preoperatorio"
+        target_gov = "Nuova governance Chirurgica"
+        best_title, score = matcher.find_best_match(piano_gov, [target_gov, "Unrelated Course"])
+        self.assertEqual(best_title, target_gov)
+        self.assertEqual(score, 100.0)
 
 if __name__ == "__main__":
     unittest.main()

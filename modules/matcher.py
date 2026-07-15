@@ -77,9 +77,10 @@ class FuzzyMatcher:
             if isinstance(targets, str):
                 targets = [targets]
             # Normalise comparison to prevent minor spacing/casing issues in config
-            targets_clean = {t.strip().lower(): t for t in targets}
+            targets_clean = {re.sub(r"\s+", " ", t.strip().lower()): t for t in targets}
             for cand in candidates:
-                if cand.strip().lower() in targets_clean:
+                cand_clean = re.sub(r"\s+", " ", cand.strip().lower())
+                if cand_clean in targets_clean:
                     return cand, 100.0
             
         norm_piano = normalize_title(piano_title)
