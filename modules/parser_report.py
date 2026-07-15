@@ -88,6 +88,11 @@ class ReportParser:
                 
             course_title = str(title_val).strip()
             
+            # Unify ACLS monthly courses to a single title
+            import re
+            if re.match(r"^ACLS\s+(gennaio|febbraio|marzo|aprile|maggio|giugno|luglio|agosto|settembre|ottobre|novembre|dicembre)$", course_title, re.IGNORECASE):
+                course_title = "ACLS"
+            
             # Skip header replication rows or garbage if any
             if course_title == "Corsi 2026" or course_title == "Note":
                 continue

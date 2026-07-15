@@ -183,6 +183,28 @@ class TestReportSystem(unittest.TestCase):
         best_title, score = matcher.find_best_match(piano_gov, [target_gov, "Unrelated Course"])
         self.assertEqual(best_title, target_gov)
         self.assertEqual(score, 100.0)
+        
+        # Test mapped equivalence for ACLS
+        piano_acls = "Esecutore ACLS (Advanced Cardiac Life Support (AHA)"
+        target_acls = "ACLS"
+        best_title, score = matcher.find_best_match(piano_acls, [target_acls, "Unrelated Course"])
+        self.assertEqual(best_title, target_acls)
+        self.assertEqual(score, 100.0)
+        
+        # Test mapped equivalence for batch 2
+        best_title, score = matcher.find_best_match(
+            "Incontri multidisciplinari: Heart and aortic team audit clinico",
+            ["INCONTRI MULTIDISCIPLINARI: HEART TEAM AUDIT CLINICO", "Unrelated Course"]
+        )
+        self.assertEqual(best_title, "INCONTRI MULTIDISCIPLINARI: HEART TEAM AUDIT CLINICO")
+        self.assertEqual(score, 100.0)
+
+        best_title, score = matcher.find_best_match(
+            "Laboratorio di simulazione urgenze intraospedaliere",
+            ["Laboratorio Urgenze Intraospedaliere", "Unrelated Course"]
+        )
+        self.assertEqual(best_title, "Laboratorio Urgenze Intraospedaliere")
+        self.assertEqual(score, 100.0)
 
 if __name__ == "__main__":
     unittest.main()
